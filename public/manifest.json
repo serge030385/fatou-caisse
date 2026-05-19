@@ -1,0 +1,21 @@
+{
+  "name": "Fatou Caisse",
+  "short_name": "Fatou Caisse",
+  "description": "Caisse mobile simple pour Fatou Shop",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fff9f3",
+  "theme_color": "#c9412f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance", "productivity"],
+  "lang": "fr"
+}
