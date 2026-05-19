@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#c9412f" />
+    <title>Fatou Caisse hors ligne</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #fff9f3;
+        color: #24201c;
+      }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background:
+          radial-gradient(circle at top left, rgba(243, 167, 52, 0.22), transparent 28rem),
+          linear-gradient(180deg, #fffaf5 0%, #fff5eb 100%);
+      }
+      main {
+        width: min(100%, 420px);
+        border: 1px solid #eadfd4;
+        border-radius: 22px;
+        background: white;
+        padding: 24px;
+        box-shadow: 0 14px 40px rgba(78, 45, 25, 0.1);
+      }
+      img {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+      }
+      h1 {
+        margin: 18px 0 8px;
+        font-size: 28px;
+        line-height: 1.1;
+      }
+      p {
+        margin: 0;
+        color: #756f68;
+        font-weight: 700;
+        line-height: 1.55;
+      }
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 54px;
+        margin-top: 20px;
+        border-radius: 18px;
+        background: #c9412f;
+        color: white;
+        padding: 0 22px;
+        font-weight: 900;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="/icons/icon.svg" alt="" />
+      <h1>Fatou Caisse</h1>
+      <p>Tu es hors ligne. Les pages déjà ouvertes peuvent rester disponibles, puis la synchronisation reprendra avec la connexion.</p>
+      <a href="/">Réessayer</a>
+    </main>
+  </body>
+</html>

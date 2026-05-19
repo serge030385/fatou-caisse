@@ -17,6 +17,7 @@ import { calculateSummary, stockStatus } from "@/lib/calculations";
 import { moneyTl } from "@/lib/format";
 import { productCategoryLabel } from "@/lib/labels";
 import { useFatouStore } from "@/lib/fatou-store";
+import { PwaInstallCard } from "@/components/pwa-install-card";
 
 export function DashboardPage() {
   const { data, storageMode } = useFatouStore();
@@ -29,6 +30,8 @@ export function DashboardPage() {
         title="Bonjour Fatou"
         description="Les chiffres essentiels et les actions rapides pour la journée."
       />
+
+      <PwaInstallCard />
 
       <div className="grid grid-cols-2 gap-3">
         <MetricCard label="Ventes du jour" value={moneyTl(summary.todaySalesTotal)} icon={Wallet} />

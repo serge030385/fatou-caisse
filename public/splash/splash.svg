@@ -1,0 +1,13 @@
+<svg width="1170" height="2532" viewBox="0 0 1170 2532" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1170" height="2532" fill="#FFF9F3"/>
+  <circle cx="938" cy="254" r="180" fill="#F3A734" fill-opacity="0.32"/>
+  <circle cx="156" cy="2162" r="260" fill="#157A63" fill-opacity="0.12"/>
+  <rect x="343" y="830" width="484" height="484" rx="112" fill="#C9412F"/>
+  <circle cx="710" cy="944" r="64" fill="#F3A734"/>
+  <path d="M441 1015C441 965.294 481.294 925 531 925H646C695.706 925 736 965.294 736 1015V1194C736 1243.71 695.706 1284 646 1284H531C481.294 1284 441 1243.71 441 1194V1015Z" fill="#FFF9F3"/>
+  <path d="M487 1066H693" stroke="#24201C" stroke-width="32" stroke-linecap="round"/>
+  <path d="M487 1142H660" stroke="#157A63" stroke-width="32" stroke-linecap="round"/>
+  <path d="M487 1216H616" stroke="#2477A8" stroke-width="32" stroke-linecap="round"/>
+  <text x="585" y="1418" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="96" fill="#24201C">Fatou Caisse</text>
+  <text x="585" y="1498" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="38" fill="#756F68">Caisse mobile simple</text>
+</svg>
