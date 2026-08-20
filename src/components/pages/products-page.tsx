@@ -48,15 +48,15 @@ export function ProductsPage() {
     try {
       if (editing) {
         await updateProduct(editing.id, input);
-        setMessage("Produit modifié dans Supabase.");
+        setMessage("Produit modifié avec succès");
       } else {
         await addProduct(input);
         setMessage("Produit ajouté dans Supabase.");
       }
       setEditing(null);
       setForm(emptyForm);
-    } catch (reason) {
-      setMessage(reason instanceof Error ? reason.message : "Requête Supabase impossible.");
+    } catch {
+      setMessage("Une erreur est survenue. Veuillez réessayer.");
     }
   }
 
@@ -75,12 +75,16 @@ export function ProductsPage() {
   }
 
   async function removeProduct(product: Product) {
-    if (window.confirm(`Supprimer ${product.name} ?`)) {
+    if (window.confirm("Voulez-vous vraiment supprimer ce produit ?")) {
       try {
         await deleteProduct(product.id);
-        setMessage("Produit supprimé dans Supabase.");
+        setMessage("Produit supprimé");
       } catch (reason) {
-        setMessage(reason instanceof Error ? reason.message : "Suppression Supabase impossible.");
+        setMessage(
+          reason instanceof Error && reason.message.includes("historique des ventes")
+            ? reason.message
+            : "Une erreur est survenue. Veuillez réessayer.",
+        );
       }
     }
   }
@@ -196,8 +200,12 @@ export function ProductsPage() {
 
           <PrimaryButton type="submit">
             <span className="inline-flex items-center justify-center gap-2">
-              <Plus size={20} aria-hidden="true" />
-              {editing ? "Enregistrer" : "Ajouter"}
+              {editing ? (
+                <Pencil size={20} aria-hidden="true" />
+              ) : (
+                <Plus size={20} aria-hidden="true" />
+              )}
+              {editing ? "Enregistrer les modifications" : "Ajouter"}
             </span>
           </PrimaryButton>
           {message ? <p className="text-center text-sm font-black text-[var(--leaf)]">{message}</p> : null}

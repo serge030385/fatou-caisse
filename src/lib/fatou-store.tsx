@@ -87,6 +87,8 @@ type StoreContext = {
   recordFreeSale(input: FreeSaleInput): Promise<void>;
   addExpense(input: ExpenseInput): Promise<void>;
   addMoneyTransfer(input: TransferInput): Promise<void>;
+  updateMoneyTransfer(id: string, input: TransferInput): Promise<void>;
+  deleteMoneyTransfer(id: string): Promise<void>;
   updateTransferStatus(id: string, status: TransferStatus): Promise<void>;
   adjustStock(productId: string, stockQuantity: number): Promise<void>;
 };
@@ -306,6 +308,33 @@ export function FatouStoreProvider({ children }: { children: React.ReactNode }) 
     [runMutation],
   );
 
+  const updateMoneyTransfer = useCallback(
+    async (id: string, input: TransferInput) => {
+      await runMutation(async () => {
+        const existingTransfer = data.moneyTransfers.find((transfer) => transfer.id === id);
+        if (!existingTransfer) {
+          throw new Error("Transfert introuvable dans Supabase.");
+        }
+
+        await updateSupabase(
+          "money_transfers",
+          id,
+          transferToDb({ ...existingTransfer, ...input, updatedAt: nowIso() }),
+        );
+      });
+    },
+    [data.moneyTransfers, runMutation],
+  );
+
+  const deleteMoneyTransfer = useCallback(
+    async (id: string) => {
+      await runMutation(async () => {
+        await deleteSupabase("money_transfers", id);
+      });
+    },
+    [runMutation],
+  );
+
   const updateTransferStatus = useCallback(
     async (id: string, status: TransferStatus) => {
       await runMutation(async () => {
@@ -360,6 +389,8 @@ export function FatouStoreProvider({ children }: { children: React.ReactNode }) 
       recordFreeSale,
       addExpense,
       addMoneyTransfer,
+      updateMoneyTransfer,
+      deleteMoneyTransfer,
       updateTransferStatus,
       adjustStock,
     }),
@@ -369,6 +400,7 @@ export function FatouStoreProvider({ children }: { children: React.ReactNode }) 
       addProduct,
       adjustStock,
       data,
+      deleteMoneyTransfer,
       deleteProduct,
       error,
       loading,
@@ -376,6 +408,7 @@ export function FatouStoreProvider({ children }: { children: React.ReactNode }) 
       recordProductSale,
       refreshData,
       storageMode,
+      updateMoneyTransfer,
       updateProduct,
       updateTransferStatus,
     ],
@@ -469,6 +502,7 @@ async function insertSupabase(table: string, payload: Record<string, unknown>) {
   const client = assertSupabaseClient();
   const { error } = await client.from(table).insert(payload);
   if (error) {
+    logSupabaseError(error);
     throw error;
   }
 }
@@ -477,6 +511,7 @@ async function updateSupabase(table: string, id: string, payload: Record<string,
   const client = assertSupabaseClient();
   const { error } = await client.from(table).update(payload).eq("id", id);
   if (error) {
+    logSupabaseError(error);
     throw error;
   }
 }
@@ -485,6 +520,12 @@ async function deleteSupabase(table: string, id: string) {
   const client = assertSupabaseClient();
   const { error } = await client.from(table).delete().eq("id", id);
   if (error) {
+    logSupabaseError(error);
+    if (table === "products" && error.code === "23503") {
+      throw new Error(
+        "Ce produit est déjà utilisé dans l'historique des ventes et ne peut pas être supprimé.",
+      );
+    }
     throw error;
   }
 }
@@ -514,6 +555,27 @@ function formatSupabaseError(reason: unknown) {
     return String((reason as { message: unknown }).message);
   }
   return "Requête Supabase impossible. Vérifie les variables d'environnement et les politiques RLS.";
+}
+
+function logSupabaseError(reason: unknown) {
+  if (typeof reason === "object" && reason !== null) {
+    const error = reason as {
+      message?: unknown;
+      code?: unknown;
+      details?: unknown;
+      hint?: unknown;
+    };
+
+    console.error("Erreur Supabase", {
+      message: error.message,
+      code: error.code,
+      details: error.details,
+      hint: error.hint,
+    });
+    return;
+  }
+
+  console.error("Erreur Supabase", reason);
 }
 
 function nowIso() {
